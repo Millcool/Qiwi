@@ -32,14 +32,15 @@ def get_currency_value(code, date):
             name: of Valute
             value: value of valute in that day or in the last day if that day not happened yet
     """
-    logger = setup_logging("currency_value.log")
+    #Инициализация логгера
+    logger = setup_logging("../logs/currency_value.log")
+
     date = date_for_request(date)
-    print(date)
     params = {"date_req": date}
     response = requests.get(CBR_API_URL, params=params,  timeout=10)
 
     if response.status_code != 200:
-        print("Ошибка при получении данных с сервера ЦБ РФ.")
+        logger.error("Ошибка при получении данных с сервера ЦБ РФ.")
         return None, None
 
     xml_data = response.text
@@ -47,17 +48,21 @@ def get_currency_value(code, date):
         logger.error("Курс для валюты с данным кодом на указанную дату не найден.")
         return None, None
 
+    #Определение строки с нужной валютой
     rate_start = xml_data.find(f"<CharCode>{code}</CharCode>") + len(f"<CharCode>{code}</CharCode>")
 
+    #Получение имени из xml файла
     name_start = xml_data.find("<Name>", rate_start) + len("<Name>")
     name_end = xml_data.find("</Name>", name_start)
     name = xml_data[name_start:name_end]
 
+    #Получение значения value из xml файла
     value_start = xml_data.find("<Value>", rate_start) + len("<Value>")
     value_end = xml_data.find("</Value>", value_start)
     value = xml_data[value_start:value_end]
 
     logger.info("Successfully get value")
+
     return name, value
 
 

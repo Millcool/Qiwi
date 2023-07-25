@@ -7,7 +7,7 @@ import logging
 def setup_logging_date(func):
     """Logger for date change function"""
 
-    file_handler = logging.FileHandler("date.log")
+    file_handler = logging.FileHandler("../logs/date.log")
     file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
     logger = logging.getLogger('')

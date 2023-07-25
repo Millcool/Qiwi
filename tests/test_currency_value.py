@@ -1,3 +1,7 @@
+"""
+Module for currency_value unit tests
+"""
+
 import unittest
 from unittest.mock import patch
 
@@ -5,10 +9,12 @@ from src.currency_value import get_currency_value
 
 
 class TestCurrencyValue(unittest.TestCase):
+    """Class for currency_value unit tests"""
 
     @patch("currency_value.requests.get")
     def test_get_currency_value_valid(self, mock_get):
-        # Simulate a successful response from the API
+        """Тест обычного запроса с успешным завершением """
+
         mock_get.return_value.status_code = 200
         mock_get.return_value.text = """
             <?xml version="1.0" encoding="UTF-8"?>
@@ -29,7 +35,8 @@ class TestCurrencyValue(unittest.TestCase):
 
     @patch("currency_value.requests.get")
     def test_get_currency_value_invalid_code(self, mock_get):
-        # Simulate a successful response from the API with a different currency code
+        """Тест на ввод кода валюты, которого нет в xml файле"""
+
         mock_get.return_value.status_code = 200
         mock_get.return_value.text = """
             <?xml version="1.0" encoding="UTF-8"?>
@@ -50,14 +57,14 @@ class TestCurrencyValue(unittest.TestCase):
 
     @patch("currency_value.requests.get")
     def test_get_currency_value_invalid_date(self, mock_get):
-        # Simulate a response with a non-200 status code (date not found)
+        """Тест когда не найден xml файл или произошла непредвиденная ошибка"""
+
         mock_get.return_value.status_code = 404
         mock_get.return_value.text = "Not found"
 
         name, value = get_currency_value("USD", "2022-10-08")
         self.assertIsNone(name)
         self.assertIsNone(value)
-
 
 if __name__ == "__main__":
     unittest.main()
