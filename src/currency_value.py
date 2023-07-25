@@ -2,14 +2,18 @@
 Module for daily value check
 """
 import argparse
+import logging
 
 import requests
-import logging
+
 from date_change import date_for_request
 
 CBR_API_URL = "https://www.cbr.ru/scripts/XML_daily.asp"
 
+
 def setup_logging(filename):
+    """Logger setup function"""
+
     file_handler = logging.FileHandler(filename)
     file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
@@ -17,6 +21,7 @@ def setup_logging(filename):
     logger.addHandler(file_handler)
     logger.setLevel(logging.INFO)
     return logger
+
 
 def get_currency_value(code, date):
     """
@@ -31,20 +36,18 @@ def get_currency_value(code, date):
     date = date_for_request(date)
     print(date)
     params = {"date_req": date}
-    response = requests.get(CBR_API_URL, params=params)
+    response = requests.get(CBR_API_URL, params=params,  timeout=10)
 
     if response.status_code != 200:
         print("Ошибка при получении данных с сервера ЦБ РФ.")
-        return None , None
+        return None, None
 
     xml_data = response.text
     if code not in xml_data:
-        logger.error(f"Курс для валюты с кодом '{code}' не найден на указанную дату '{date}'.")
+        logger.error("Курс для валюты с данным кодом на указанную дату не найден.")
         return None, None
 
     rate_start = xml_data.find(f"<CharCode>{code}</CharCode>") + len(f"<CharCode>{code}</CharCode>")
-    rate_end = xml_data.find("</Value>", rate_start)
-    rate = xml_data[rate_start:rate_end].replace(",", ".")
 
     name_start = xml_data.find("<Name>", rate_start) + len("<Name>")
     name_end = xml_data.find("</Name>", name_start)
@@ -54,14 +57,24 @@ def get_currency_value(code, date):
     value_end = xml_data.find("</Value>", value_start)
     value = xml_data[value_start:value_end]
 
-    logger.info(f"Successfully get value")
+    logger.info("Successfully get value")
     return name, value
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Получение курса валют ЦБ РФ за определенную дату.")
-    parser.add_argument("--code", type=str, help="Код валюты в формате ISO 4217", required=True)
-    parser.add_argument("--date", type=str, help="Дата в формате YYYY-MM-DD", required=True)
+    """Main function"""
+
+    parser = argparse.ArgumentParser(
+                                    description="Получение курса валют ЦБ РФ "
+                                                "за определенную дату.")
+    parser.add_argument("--code",
+                        type=str,
+                        help="Код валюты в формате ISO 4217",
+                        required=True)
+    parser.add_argument("--date",
+                        type=str,
+                        help="Дата в формате YYYY-MM-DD",
+                        required=True)
     args = parser.parse_args()
 
     name, value = get_currency_value(args.code.upper(), args.date)
