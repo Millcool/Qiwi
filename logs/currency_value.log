@@ -1,0 +1,24 @@
+2023-07-25 14:48:23,409 - INFO - Logging setup completed.
+2023-07-25 14:48:23,410 - INFO - Date changed
+2023-07-25 14:48:23,481 - INFO - Successfully get value
+2023-07-25 14:48:50,651 - INFO - Logging setup completed.
+2023-07-25 14:48:50,651 - INFO - Date changed
+2023-07-25 14:48:50,701 - INFO - Successfully get value
+2023-07-25 14:58:45,133 - INFO - Logging setup completed.
+2023-07-25 14:58:45,133 - INFO - Date changed
+2023-07-25 14:58:45,133 - ERROR - Курс для валюты с данным кодом на указанную дату не найден.
+2023-07-25 14:58:45,135 - INFO - Logging setup completed.
+2023-07-25 14:58:45,135 - INFO - Logging setup completed.
+2023-07-25 14:58:45,137 - INFO - Date changed
+2023-07-25 14:58:45,137 - INFO - Date changed
+2023-07-25 14:58:45,137 - ERROR - Ошибка при получении данных с сервера ЦБ РФ.
+2023-07-25 14:58:45,137 - ERROR - Ошибка при получении данных с сервера ЦБ РФ.
+2023-07-25 14:58:45,139 - INFO - Logging setup completed.
+2023-07-25 14:58:45,139 - INFO - Logging setup completed.
+2023-07-25 14:58:45,139 - INFO - Logging setup completed.
+2023-07-25 14:58:45,139 - INFO - Date changed
+2023-07-25 14:58:45,139 - INFO - Date changed
+2023-07-25 14:58:45,139 - INFO - Date changed
+2023-07-25 14:58:45,139 - INFO - Successfully get value
+2023-07-25 14:58:45,139 - INFO - Successfully get value
+2023-07-25 14:58:45,139 - INFO - Successfully get value
